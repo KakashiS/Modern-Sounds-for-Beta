@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "extended_sounds",
+  "version": "${1.2}",
+
+  "name": "Modern Sounds for Beta",
+  "description": "This small mod adds missing sounds to Beta 1.7.3",
+  "authors": [
+    "JockeyPhilosopher"
+  ],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/modernsoundsforbeta",
+    "sources": "https://github.com/KakashiS/Modern-Sounds-for-Beta"
+  },
+
+  "license": "Code is licensed under the MIT License. Audio assets are property of Mojang Studios.",
+  "icon": "assets/extended_sounds/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "stationapi:event_bus": [
+      "jockeyphilosopher.extended_sounds.events.init.InitListener"
+    ],
+    "gcapi3": [
+      "jockeyphilosopher.extended_sounds.Config"
+    ],
+    "stationapi:event_bus_client": [
+    ],
+    "stationapi:event_bus_server": [
+    ]
+  },
+  "mixins": [
+    "extended_sounds.mixins.json"
+  ],
+
+  "depends": {
+    "minecraft": "1.0.0-beta.7.3"
+  }
+}
