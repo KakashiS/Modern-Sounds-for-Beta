@@ -14,14 +14,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Minecraft.class)
 public abstract class MinecraftGlobalTickMixin {
 
-    @Shadow public Screen currentScreen;
-    @Shadow public World world;
-    @Shadow public GameOptions options;
+    @Shadow
+    public Screen currentScreen;
+
+    @Shadow
+    public World world;
+
+    @Shadow
+    public GameOptions options;
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void extended_sounds$globalTick(CallbackInfo ci) {
-        boolean menuOpen = this.currentScreen != null || this.world == null;
-        float masterVolume = this.options != null ? this.options.soundVolume : 1.0F;
+        boolean menuOpen =
+                this.world == null
+                        || (this.currentScreen != null && this.currentScreen.shouldPause());
+
+        float masterVolume = this.options != null
+                ? this.options.soundVolume
+                : 1.0F;
+
         ExtendedSoundsLoop.globalTick(menuOpen, masterVolume);
     }
 }
