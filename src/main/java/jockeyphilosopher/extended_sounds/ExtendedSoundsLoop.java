@@ -4,6 +4,10 @@ import jockeyphilosopher.extended_sounds.mixin.SoundManagerAccessor;
 import paulscode.sound.SoundSystem;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class ExtendedSoundsLoop {
 
@@ -20,8 +24,8 @@ public class ExtendedSoundsLoop {
     private static boolean underwaterPausedByMenu = false;
 
     private static URL minecartUrl;
-    private static boolean minecartPlaying = false;
-    private static boolean minecartPausedByMenu = false;
+    private static final Set<Integer> minecartPlayingIds = new HashSet<>();
+    private static final Set<Integer> minecartPausedByMenuIds = new HashSet<>();
 
     private static URL fallWindUrl;
     private static boolean fallWindPlaying = false;
@@ -38,10 +42,9 @@ public class ExtendedSoundsLoop {
             underwaterUrl = classLoader.getResource(base + "underwater_loop.ogg");
             minecartUrl = classLoader.getResource(base + "minecart_rolling_loop.ogg");
             fallWindUrl = classLoader.getResource(base + "fall_wind_loop.ogg");
-
-            // System.out.println("EXTENDED_SOUNDS loop file (underwater): " + underwaterUrl);
-            // System.out.println("EXTENDED_SOUNDS loop file (minecart): " + minecartUrl);
-            // System.out.println("EXTENDED_SOUNDS loop file (fallWind): " + fallWindUrl);
+            //System.out.println("EXTENDED_SOUNDS loop file (underwater): " + underwaterUrl);
+            //System.out.println("EXTENDED_SOUNDS loop file (minecart): " + minecartUrl);
+            //System.out.println("EXTENDED_SOUNDS loop file (fallWind): " + fallWindUrl);
 
             preload(underwaterUrl, "underwater_loop.ogg");
             preload(minecartUrl, "minecart_rolling_loop.ogg");
@@ -80,16 +83,18 @@ public class ExtendedSoundsLoop {
             }
         }
 
-        if (minecartPlaying) {
-            if (menuOpen && !minecartPausedByMenu) {
-                soundSystem.pause("extended_sounds_minecart");
-                minecartPausedByMenu = true;
-            } else if (!menuOpen && minecartPausedByMenu) {
-                soundSystem.play("extended_sounds_minecart");
-                minecartPausedByMenu = false;
+        for (int id : minecartPlayingIds) {
+            String sourceName = "extended_sounds_minecart_" + id;
+            boolean pausedNow = minecartPausedByMenuIds.contains(id);
+            if (menuOpen && !pausedNow) {
+                soundSystem.pause(sourceName);
+                minecartPausedByMenuIds.add(id);
+            } else if (!menuOpen && pausedNow) {
+                soundSystem.play(sourceName);
+                minecartPausedByMenuIds.remove(id);
             }
             if (!menuOpen) {
-                soundSystem.setVolume("extended_sounds_minecart", MINECART_BASE_VOLUME * masterVolume);
+                soundSystem.setVolume(sourceName, MINECART_BASE_VOLUME * masterVolume);
             }
         }
 
@@ -130,34 +135,36 @@ public class ExtendedSoundsLoop {
         underwaterPausedByMenu = false;
     }
 
-    public static void startMinecart(float x, float y, float z) {
-        if (minecartPlaying || minecartUrl == null) return;
+
+    public static void startMinecart(int entityId, float x, float y, float z) {
+        if (minecartPlayingIds.contains(entityId) || minecartUrl == null) return;
         SoundSystem soundSystem = SoundManagerAccessor.extended_sounds$getSoundSystem();
         if (soundSystem == null) return;
-        soundSystem.newSource(false, "extended_sounds_minecart", minecartUrl, "minecart_rolling_loop.ogg", true, x, y, z, 2, 16f);
-        soundSystem.setVolume("extended_sounds_minecart", MINECART_BASE_VOLUME * masterVolume);
-        soundSystem.play("extended_sounds_minecart");
-        minecartPlaying = true;
-        minecartPausedByMenu = false;
+        String sourceName = "extended_sounds_minecart_" + entityId;
+        soundSystem.newSource(false, sourceName, minecartUrl, "minecart_rolling_loop.ogg", true, x, y, z, 2, 16f);
+        soundSystem.setVolume(sourceName, MINECART_BASE_VOLUME * masterVolume);
+        soundSystem.play(sourceName);
+        minecartPlayingIds.add(entityId);
     }
 
-    public static void updateMinecartPosition(float x, float y, float z) {
-        if (!minecartPlaying) return;
+    public static void updateMinecartPosition(int entityId, float x, float y, float z) {
+        if (!minecartPlayingIds.contains(entityId)) return;
         SoundSystem soundSystem = SoundManagerAccessor.extended_sounds$getSoundSystem();
         if (soundSystem != null) {
-            soundSystem.setPosition("extended_sounds_minecart", x, y, z);
+            soundSystem.setPosition("extended_sounds_minecart_" + entityId, x, y, z);
         }
     }
 
-    public static void stopMinecart() {
-        if (!minecartPlaying) return;
+    public static void stopMinecart(int entityId) {
+        if (!minecartPlayingIds.contains(entityId)) return;
         SoundSystem soundSystem = SoundManagerAccessor.extended_sounds$getSoundSystem();
         if (soundSystem != null) {
-            soundSystem.stop("extended_sounds_minecart");
-            soundSystem.removeSource("extended_sounds_minecart");
+            String sourceName = "extended_sounds_minecart_" + entityId;
+            soundSystem.stop(sourceName);
+            soundSystem.removeSource(sourceName);
         }
-        minecartPlaying = false;
-        minecartPausedByMenu = false;
+        minecartPlayingIds.remove(entityId);
+        minecartPausedByMenuIds.remove(entityId);
     }
 
 

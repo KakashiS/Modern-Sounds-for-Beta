@@ -38,13 +38,13 @@ public abstract class MinecartEntitySoundMixin {
 
         if (moving) {
             if (!extended_sounds$wasMoving) {
-                ExtendedSoundsLoop.startMinecart((float) self.x, (float) self.y, (float) self.z);
+                ExtendedSoundsLoop.startMinecart(self.id, (float) self.x, (float) self.y, (float) self.z);
             } else {
-                ExtendedSoundsLoop.updateMinecartPosition((float) self.x, (float) self.y, (float) self.z);
+                ExtendedSoundsLoop.updateMinecartPosition(self.id, (float) self.x, (float) self.y, (float) self.z);
             }
         } else {
             if (extended_sounds$wasMoving) {
-                ExtendedSoundsLoop.stopMinecart();
+                ExtendedSoundsLoop.stopMinecart(self.id);
             }
         }
 
@@ -53,8 +53,9 @@ public abstract class MinecartEntitySoundMixin {
 
     @Inject(method = "markDead", at = @At("HEAD"))
     private void extended_sounds$stopSoundOnDestroy(CallbackInfo ci) {
+        MinecartEntity self = (MinecartEntity) (Object) this;
         if (extended_sounds$wasMoving) {
-            ExtendedSoundsLoop.stopMinecart();
+            ExtendedSoundsLoop.stopMinecart(self.id);
             extended_sounds$wasMoving = false;
         }
     }
