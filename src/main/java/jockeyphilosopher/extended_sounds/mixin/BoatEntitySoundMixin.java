@@ -1,7 +1,9 @@
 package jockeyphilosopher.extended_sounds.mixin;
 
 import net.minecraft.entity.player.ClientPlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
+import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,9 +30,11 @@ public abstract class BoatEntitySoundMixin {
 
         BoatEntity self = (BoatEntity) (Object) this;
 
-        boolean audibleToLocalPlayer = self.passenger == null || self.passenger instanceof ClientPlayerEntity;
+        boolean audibleToLocalPlayer = !(self.passenger instanceof PlayerEntity)
+                || self.passenger instanceof ClientPlayerEntity;
 
         boolean moving = audibleToLocalPlayer
+                && extended_sounds$isOnWater(self)
                 && (self.velocityX * self.velocityX + self.velocityZ * self.velocityZ) > 0.0015;
 
         if (moving) {
@@ -43,5 +47,17 @@ public abstract class BoatEntitySoundMixin {
         } else {
             extended_sounds$waterTimer = 0;
         }
+    }
+
+    @Unique
+    private boolean extended_sounds$isOnWater(BoatEntity boat) {
+        int x = MathHelper.floor(boat.x);
+        int y = MathHelper.floor(boat.boundingBox.minY);
+        int z = MathHelper.floor(boat.z);
+
+        int atBottom = boat.world.getBlockId(x, y, z);
+        int below = boat.world.getBlockId(x, y - 1, z);
+
+        return atBottom == 8 || atBottom == 9 || below == 8 || below == 9;
     }
 }

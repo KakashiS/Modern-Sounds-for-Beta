@@ -4,9 +4,7 @@ import jockeyphilosopher.extended_sounds.mixin.SoundManagerAccessor;
 import paulscode.sound.SoundSystem;
 
 import java.net.URL;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public class ExtendedSoundsLoop {
@@ -22,6 +20,7 @@ public class ExtendedSoundsLoop {
     private static URL underwaterUrl;
     private static boolean underwaterPlaying = false;
     private static boolean underwaterPausedByMenu = false;
+    private static Object underwaterOwner = null;
 
     private static URL minecartUrl;
     private static final Set<Integer> minecartPlayingIds = new HashSet<>();
@@ -31,8 +30,38 @@ public class ExtendedSoundsLoop {
     private static boolean fallWindPlaying = false;
     private static boolean fallWindPausedByMenu = false;
     private static float fallWindFadeProgress = 0F;
+    private static Object fallWindOwner = null;
 
     private static int preloadCounter = 0;
+
+    public static void resetAll() {
+        SoundSystem soundSystem = SoundManagerAccessor.extended_sounds$getSoundSystem();
+        if (soundSystem != null) {
+            if (underwaterPlaying) {
+                soundSystem.stop("extended_sounds_underwater");
+                soundSystem.removeSource("extended_sounds_underwater");
+            }
+            for (int id : new HashSet<>(minecartPlayingIds)) {
+                String sourceName = "extended_sounds_minecart_" + id;
+                soundSystem.stop(sourceName);
+                soundSystem.removeSource(sourceName);
+            }
+            if (fallWindPlaying) {
+                soundSystem.stop("extended_sounds_fallwind");
+                soundSystem.removeSource("extended_sounds_fallwind");
+            }
+        }
+
+        underwaterPlaying = false;
+        underwaterPausedByMenu = false;
+        underwaterOwner = null;
+        minecartPlayingIds.clear();
+        minecartPausedByMenuIds.clear();
+        fallWindPlaying = false;
+        fallWindPausedByMenu = false;
+        fallWindFadeProgress = 0F;
+        fallWindOwner = null;
+    }
 
     public static void init() {
         try {
@@ -42,9 +71,6 @@ public class ExtendedSoundsLoop {
             underwaterUrl = classLoader.getResource(base + "underwater_loop.ogg");
             minecartUrl = classLoader.getResource(base + "minecart_rolling_loop.ogg");
             fallWindUrl = classLoader.getResource(base + "fall_wind_loop.ogg");
-            //System.out.println("EXTENDED_SOUNDS loop file (underwater): " + underwaterUrl);
-            //System.out.println("EXTENDED_SOUNDS loop file (minecart): " + minecartUrl);
-            //System.out.println("EXTENDED_SOUNDS loop file (fallWind): " + fallWindUrl);
 
             preload(underwaterUrl, "underwater_loop.ogg");
             preload(minecartUrl, "minecart_rolling_loop.ogg");
@@ -113,7 +139,8 @@ public class ExtendedSoundsLoop {
     }
 
 
-    public static void startUnderwater() {
+
+    public static void startUnderwater(Object owner) {
         if (underwaterPlaying || underwaterUrl == null) return;
         SoundSystem soundSystem = SoundManagerAccessor.extended_sounds$getSoundSystem();
         if (soundSystem == null) return;
@@ -122,6 +149,7 @@ public class ExtendedSoundsLoop {
         soundSystem.play("extended_sounds_underwater");
         underwaterPlaying = true;
         underwaterPausedByMenu = false;
+        underwaterOwner = owner;
     }
 
     public static void stopUnderwater() {
@@ -133,7 +161,15 @@ public class ExtendedSoundsLoop {
         }
         underwaterPlaying = false;
         underwaterPausedByMenu = false;
+        underwaterOwner = null;
     }
+
+    public static void stopUnderwaterIfNotOwner(Object current) {
+        if (underwaterPlaying && underwaterOwner != current) {
+            stopUnderwater();
+        }
+    }
+
 
 
     public static void startMinecart(int entityId, float x, float y, float z) {
@@ -168,7 +204,8 @@ public class ExtendedSoundsLoop {
     }
 
 
-    public static void startFallWind() {
+
+    public static void startFallWind(Object owner) {
         if (fallWindPlaying || fallWindUrl == null) return;
         SoundSystem soundSystem = SoundManagerAccessor.extended_sounds$getSoundSystem();
         if (soundSystem == null) return;
@@ -178,6 +215,7 @@ public class ExtendedSoundsLoop {
         soundSystem.play("extended_sounds_fallwind");
         fallWindPlaying = true;
         fallWindPausedByMenu = false;
+        fallWindOwner = owner;
     }
 
     public static void tickFallWindFade() {
@@ -195,5 +233,12 @@ public class ExtendedSoundsLoop {
         fallWindPlaying = false;
         fallWindPausedByMenu = false;
         fallWindFadeProgress = 0F;
+        fallWindOwner = null;
+    }
+
+    public static void stopFallWindIfNotOwner(Object current) {
+        if (fallWindPlaying && fallWindOwner != current) {
+            stopFallWind();
+        }
     }
 }

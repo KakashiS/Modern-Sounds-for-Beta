@@ -1,9 +1,10 @@
 package jockeyphilosopher.extended_sounds.mixin;
 
+import jockeyphilosopher.extended_sounds.ExtendedSoundsLoop;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import jockeyphilosopher.extended_sounds.ExtendedSoundsLoop;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -23,16 +24,20 @@ public abstract class PlayerEntityFallSoundMixin {
 
     @Inject(method = "tickMovement", at = @At("TAIL"))
     private void extended_sounds$fallWindSound(CallbackInfo ci) {
-        if (!jockeyphilosopher.extended_sounds.Config.config.movement.enableFallWindSound) {
+        Entity self = (Entity) (Object) this;
+
+        if (!(self instanceof ClientPlayerEntity)) return;
+
+        ExtendedSoundsLoop.stopFallWindIfNotOwner(self);
+
+        if (((PlayerEntity) (Object) this).health <= 0
+                || !jockeyphilosopher.extended_sounds.Config.config.movement.enableFallWindSound) {
             if (extended_sounds$falling) {
                 ExtendedSoundsLoop.stopFallWind();
                 extended_sounds$falling = false;
             }
-            ExtendedSoundsLoop.tickFallWindFade();
             return;
         }
-
-        Entity self = (Entity) (Object) this;
 
         double threshold = extended_sounds$falling ? STOP_THRESHOLD : START_THRESHOLD;
 
@@ -42,7 +47,7 @@ public abstract class PlayerEntityFallSoundMixin {
                 && self.velocityY < threshold;
 
         if (freeFalling && !extended_sounds$falling) {
-            ExtendedSoundsLoop.startFallWind();
+            ExtendedSoundsLoop.startFallWind(self);
             extended_sounds$falling = true;
         } else if (!freeFalling && extended_sounds$falling) {
             ExtendedSoundsLoop.stopFallWind();

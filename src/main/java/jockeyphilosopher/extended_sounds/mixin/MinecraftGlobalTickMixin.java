@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import net.minecraft.entity.player.PlayerEntity;
 
 @Mixin(Minecraft.class)
 public abstract class MinecraftGlobalTickMixin {
@@ -35,4 +36,13 @@ public abstract class MinecraftGlobalTickMixin {
 
         ExtendedSoundsLoop.globalTick(menuOpen, masterVolume);
     }
+
+    @Inject(
+            method = "setWorld(Lnet/minecraft/world/World;Ljava/lang/String;Lnet/minecraft/entity/player/PlayerEntity;)V",
+            at = @At("HEAD")
+    )
+    private void extended_sounds$onWorldChange(World world, String message, PlayerEntity player, CallbackInfo ci) {
+        ExtendedSoundsLoop.resetAll();
+    }
 }
+

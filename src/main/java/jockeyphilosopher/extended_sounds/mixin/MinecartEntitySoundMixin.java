@@ -2,6 +2,7 @@ package jockeyphilosopher.extended_sounds.mixin;
 
 import net.minecraft.block.RailBlock;
 import net.minecraft.entity.player.ClientPlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.MinecartEntity;
 import net.minecraft.util.math.MathHelper;
 import jockeyphilosopher.extended_sounds.ExtendedSoundsLoop;
@@ -21,7 +22,8 @@ public abstract class MinecartEntitySoundMixin {
     private void extended_sounds$rollSound(CallbackInfo ci) {
         MinecartEntity self = (MinecartEntity) (Object) this;
 
-        boolean audibleToLocalPlayer = self.passenger == null || self.passenger instanceof ClientPlayerEntity;
+        boolean audibleToLocalPlayer = !(self.passenger instanceof PlayerEntity)
+                || self.passenger instanceof ClientPlayerEntity;
 
         int ix = MathHelper.floor(self.x);
         int iy = MathHelper.floor(self.y);

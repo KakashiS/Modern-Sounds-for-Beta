@@ -6,10 +6,10 @@ import net.minecraft.client.sound.SoundManager;
 import net.modificationstation.stationapi.api.client.sound.CustomSoundMap;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.Unique;
 
 import java.net.URL;
 
@@ -55,28 +55,68 @@ public abstract class ExtendedSoundsLoaderMixin {
             "ladder_hit2.ogg",
             "ladder_hit3.ogg",
             "ladder_hit4.ogg",
-            "ladder_hit5.ogg"
+            "ladder_hit5.ogg",
+            "cow_milk1.ogg",
+            "cow_milk2.ogg",
+            "cow_milk3.ogg",
+            "empty_lava_bucket1.ogg",
+            "empty_lava_bucket2.ogg",
+            "empty_lava_bucket3.ogg",
+            "empty_water_bucket1.ogg",
+            "empty_water_bucket2.ogg",
+            "empty_water_bucket3.ogg",
+            "fill_lava_bucket1.ogg",
+            "fill_lava_bucket2.ogg",
+            "fill_lava_bucket3.ogg",
+            "fill_water_bucket1.ogg",
+            "fill_water_bucket2.ogg",
+            "fill_water_bucket3.ogg",
+            "equip_generic1.ogg",
+            "equip_generic2.ogg",
+            "equip_generic3.ogg",
+            "equip_generic4.ogg",
+            "equip_iron1.ogg",
+            "equip_iron2.ogg",
+            "equip_iron3.ogg",
+            "equip_iron4.ogg",
+            "equip_diamond1.ogg",
+            "equip_diamond2.ogg",
+            "equip_diamond3.ogg",
+            "equip_diamond4.ogg",
+            "flint_and_steel_click.ogg",
+            "painting_place1.ogg",
+            "painting_place2.ogg",
+            "painting_place3.ogg",
+            "painting_place4.ogg",
+            "painting_break1.ogg",
+            "painting_break2.ogg",
+            "painting_break3.ogg"
     };
 
     @Inject(method = "loadSounds", at = @At("TAIL"))
     private void extended_sounds$loadOwnAudio(GameOptions options, CallbackInfo ci) {
         try {
-            ClassLoader classLoader = ExtendedSoundsLoaderMixin.class.getClassLoader();
             jockeyphilosopher.extended_sounds.ExtendedSoundsLoop.init();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-            for (String fileName : SOUND_FILES) {
+        ClassLoader classLoader = ExtendedSoundsLoaderMixin.class.getClassLoader();
+
+        for (String fileName : SOUND_FILES) {
+            try {
                 URL fileUrl = classLoader.getResource("assets/extended_sounds/stationapi/sounds/sound/" + fileName);
                 if (fileUrl != null) {
                     String soundId = "extended_sounds:" + fileName;
                     ((CustomSoundMap) this.sounds).putSound(soundId, fileUrl);
                     jockeyphilosopher.extended_sounds.ExtendedSoundsLoop.preload(fileUrl, fileName);
-                    // System.out.println("EXTENDED_SOUNDS registered: " + soundId);
                 } else {
-                   // System.out.println("EXTENDED_SOUNDS NOT FOUND: " + fileName);
+                    System.out.println("EXTENDED_SOUNDS NOT FOUND: " + fileName);
                 }
+            } catch (Exception e) {
+                System.out.println("EXTENDED_SOUNDS FAILED: " + fileName);
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

@@ -18,6 +18,9 @@ public class Config {
         @ConfigCategory(name = "Movement Sounds")
         public MovementSounds movement = new MovementSounds();
 
+        @ConfigCategory(name = "Item Sounds")
+        public ItemSounds items = new ItemSounds();
+
         public static class EnvironmentSounds {
             @ConfigEntry(name = "Enable Furnace Crackle Sound", description = "Furnace Crackle Sound")
             public Boolean enableFurnaceCrackle = true;
@@ -46,6 +49,23 @@ public class Config {
 
             @ConfigEntry(name = "Enable Fall Wind Sound", description = "Fall Wind Sound")
             public Boolean enableFallWindSound = true;
+        }
+
+        public static class ItemSounds {
+            @ConfigEntry(name = "Enable Bucket Sounds", description = "Bucket Fill/Empty Sounds")
+            public Boolean enableBucketSounds = true;
+
+            @ConfigEntry(name = "Enable Cow Milking Sound", description = "Cow Milking Sound")
+            public Boolean enableCowMilkSound = true;
+
+            @ConfigEntry(name = "Enable Flint And Steel Sound", description = "Flint And Steel Sound")
+            public Boolean enableFlintAndSteelSound = true;
+
+            @ConfigEntry(name = "Enable Painting Sounds", description = "Painting Sounds")
+            public Boolean enablePaintingSounds = true;
+
+            @ConfigEntry(name = "Enable Armor Equip Sounds", description = "Armor Equip Sounds")
+            public Boolean enableArmorEquipSounds = true;
         }
     }
 }

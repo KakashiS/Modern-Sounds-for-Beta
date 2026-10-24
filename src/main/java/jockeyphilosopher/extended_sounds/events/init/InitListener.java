@@ -22,6 +22,6 @@ public class InitListener {
     private static void serverInit(InitEvent event) {
         LOGGER.info(NAMESPACE.toString());
         java.net.URL resource = InitListener.class.getResource("/assets/extended_sounds/stationapi/sounds/sound");
-        System.out.println("SOUND FOLDER RESOURCE: " + resource);
+
     }
 }
