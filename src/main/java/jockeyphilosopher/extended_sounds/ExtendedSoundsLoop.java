@@ -68,9 +68,9 @@ public class ExtendedSoundsLoop {
             ClassLoader classLoader = ExtendedSoundsLoop.class.getClassLoader();
             String base = "assets/extended_sounds/stationapi/sounds/sound/";
 
-            underwaterUrl = classLoader.getResource(base + "underwater_loop.ogg");
-            minecartUrl = classLoader.getResource(base + "minecart_rolling_loop.ogg");
-            fallWindUrl = classLoader.getResource(base + "fall_wind_loop.ogg");
+            underwaterUrl = classLoader.getResource(base + "player/underwater_loop.ogg");
+            minecartUrl = classLoader.getResource(base + "entity/minecart/minecart_rolling_loop.ogg");
+            fallWindUrl = classLoader.getResource(base + "player/fall_wind_loop.ogg");
 
             preload(underwaterUrl, "underwater_loop.ogg");
             preload(minecartUrl, "minecart_rolling_loop.ogg");
@@ -139,7 +139,6 @@ public class ExtendedSoundsLoop {
     }
 
 
-
     public static void startUnderwater(Object owner) {
         if (underwaterPlaying || underwaterUrl == null) return;
         SoundSystem soundSystem = SoundManagerAccessor.extended_sounds$getSoundSystem();
@@ -169,7 +168,6 @@ public class ExtendedSoundsLoop {
             stopUnderwater();
         }
     }
-
 
 
     public static void startMinecart(int entityId, float x, float y, float z) {
@@ -202,7 +200,6 @@ public class ExtendedSoundsLoop {
         minecartPlayingIds.remove(entityId);
         minecartPausedByMenuIds.remove(entityId);
     }
-
 
 
     public static void startFallWind(Object owner) {

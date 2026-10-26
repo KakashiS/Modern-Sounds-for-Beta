@@ -66,6 +66,12 @@ public class Config {
 
             @ConfigEntry(name = "Enable Armor Equip Sounds", description = "Armor Equip Sounds")
             public Boolean enableArmorEquipSounds = true;
+
+            @ConfigEntry(name = "Enable Fishing Rod Sounds", description = "Fishing Rod Cast/Retrieve Sounds")
+            public Boolean enableFishingRodSounds = true;
+
+            @ConfigEntry(name = "Enable Bone Meal Sound", description = "Bone Meal Sound")
+            public Boolean enableBoneMealSound = true;
         }
     }
 }
