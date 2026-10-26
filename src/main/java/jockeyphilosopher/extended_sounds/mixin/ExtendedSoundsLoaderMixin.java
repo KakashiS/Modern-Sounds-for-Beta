@@ -19,78 +19,93 @@ public abstract class ExtendedSoundsLoaderMixin {
     @Shadow private SoundEntry sounds;
 
     @Unique
+    private static final String BASE = "assets/extended_sounds/stationapi/sounds/sound/";
+
+    @Unique
     private static final String[] SOUND_FILES = {
-            "entering_water1.ogg",
-            "entering_water2.ogg",
-            "entering_water3.ogg",
-            "exiting_water1.ogg",
-            "exiting_water2.ogg",
-            "exiting_water3.ogg",
-            "furnace_fire_crackle1.ogg",
-            "furnace_fire_crackle2.ogg",
-            "furnace_fire_crackle3.ogg",
-            "furnace_fire_crackle4.ogg",
-            "furnace_fire_crackle5.ogg",
-            "boat_water1.ogg",
-            "boat_water2.ogg",
-            "boat_water3.ogg",
-            "boat_water4.ogg",
-            "boat_water5.ogg",
-            "boat_water6.ogg",
-            "boat_water7.ogg",
-            "boat_water8.ogg",
-            "squid_idle1.ogg",
-            "squid_idle2.ogg",
-            "squid_idle3.ogg",
-            "squid_idle4.ogg",
-            "squid_idle5.ogg",
-            "squid_hit1.ogg",
-            "squid_hit2.ogg",
-            "squid_hit3.ogg",
-            "squid_hit4.ogg",
-            "squid_death1.ogg",
-            "squid_death2.ogg",
-            "squid_death3.ogg",
-            "ladder_hit1.ogg",
-            "ladder_hit2.ogg",
-            "ladder_hit3.ogg",
-            "ladder_hit4.ogg",
-            "ladder_hit5.ogg",
-            "cow_milk1.ogg",
-            "cow_milk2.ogg",
-            "cow_milk3.ogg",
-            "empty_lava_bucket1.ogg",
-            "empty_lava_bucket2.ogg",
-            "empty_lava_bucket3.ogg",
-            "empty_water_bucket1.ogg",
-            "empty_water_bucket2.ogg",
-            "empty_water_bucket3.ogg",
-            "fill_lava_bucket1.ogg",
-            "fill_lava_bucket2.ogg",
-            "fill_lava_bucket3.ogg",
-            "fill_water_bucket1.ogg",
-            "fill_water_bucket2.ogg",
-            "fill_water_bucket3.ogg",
-            "equip_generic1.ogg",
-            "equip_generic2.ogg",
-            "equip_generic3.ogg",
-            "equip_generic4.ogg",
-            "equip_iron1.ogg",
-            "equip_iron2.ogg",
-            "equip_iron3.ogg",
-            "equip_iron4.ogg",
-            "equip_diamond1.ogg",
-            "equip_diamond2.ogg",
-            "equip_diamond3.ogg",
-            "equip_diamond4.ogg",
-            "flint_and_steel_click.ogg",
-            "painting_place1.ogg",
-            "painting_place2.ogg",
-            "painting_place3.ogg",
-            "painting_place4.ogg",
-            "painting_break1.ogg",
-            "painting_break2.ogg",
-            "painting_break3.ogg"
+            // player
+            "player/entering_water1.ogg",
+            "player/entering_water2.ogg",
+            "player/entering_water3.ogg",
+            "player/exiting_water1.ogg",
+            "player/exiting_water2.ogg",
+            "player/exiting_water3.ogg",
+            "player/ladder_hit1.ogg",
+            "player/ladder_hit2.ogg",
+            "player/ladder_hit3.ogg",
+            "player/ladder_hit4.ogg",
+            "player/ladder_hit5.ogg",
+            // block
+            "block/furnace/furnace_fire_crackle1.ogg",
+            "block/furnace/furnace_fire_crackle2.ogg",
+            "block/furnace/furnace_fire_crackle3.ogg",
+            "block/furnace/furnace_fire_crackle4.ogg",
+            "block/furnace/furnace_fire_crackle5.ogg",
+            // entity
+            "entity/boat/boat_water1.ogg",
+            "entity/boat/boat_water2.ogg",
+            "entity/boat/boat_water3.ogg",
+            "entity/boat/boat_water4.ogg",
+            "entity/boat/boat_water5.ogg",
+            "entity/boat/boat_water6.ogg",
+            "entity/boat/boat_water7.ogg",
+            "entity/boat/boat_water8.ogg",
+            "entity/cow/cow_milk1.ogg",
+            "entity/cow/cow_milk2.ogg",
+            "entity/cow/cow_milk3.ogg",
+            "entity/squid/squid_idle1.ogg",
+            "entity/squid/squid_idle2.ogg",
+            "entity/squid/squid_idle3.ogg",
+            "entity/squid/squid_idle4.ogg",
+            "entity/squid/squid_idle5.ogg",
+            "entity/squid/squid_hit1.ogg",
+            "entity/squid/squid_hit2.ogg",
+            "entity/squid/squid_hit3.ogg",
+            "entity/squid/squid_hit4.ogg",
+            "entity/squid/squid_death1.ogg",
+            "entity/squid/squid_death2.ogg",
+            "entity/squid/squid_death3.ogg",
+            "entity/painting/painting_place1.ogg",
+            "entity/painting/painting_place2.ogg",
+            "entity/painting/painting_place3.ogg",
+            "entity/painting/painting_place4.ogg",
+            "entity/painting/painting_break1.ogg",
+            "entity/painting/painting_break2.ogg",
+            "entity/painting/painting_break3.ogg",
+            // item
+            "item/armor/equip_generic1.ogg",
+            "item/armor/equip_generic2.ogg",
+            "item/armor/equip_generic3.ogg",
+            "item/armor/equip_generic4.ogg",
+            "item/armor/equip_iron1.ogg",
+            "item/armor/equip_iron2.ogg",
+            "item/armor/equip_iron3.ogg",
+            "item/armor/equip_iron4.ogg",
+            "item/armor/equip_diamond1.ogg",
+            "item/armor/equip_diamond2.ogg",
+            "item/armor/equip_diamond3.ogg",
+            "item/armor/equip_diamond4.ogg",
+            "item/bucket/fill_water_bucket1.ogg",
+            "item/bucket/fill_water_bucket2.ogg",
+            "item/bucket/fill_water_bucket3.ogg",
+            "item/bucket/fill_lava_bucket1.ogg",
+            "item/bucket/fill_lava_bucket2.ogg",
+            "item/bucket/fill_lava_bucket3.ogg",
+            "item/bucket/empty_water_bucket1.ogg",
+            "item/bucket/empty_water_bucket2.ogg",
+            "item/bucket/empty_water_bucket3.ogg",
+            "item/bucket/empty_lava_bucket1.ogg",
+            "item/bucket/empty_lava_bucket2.ogg",
+            "item/bucket/empty_lava_bucket3.ogg",
+            "item/fishing_rod/fishing_rod_cast.ogg",
+            "item/fishing_rod/bobber_retrieve1.ogg",
+            "item/fishing_rod/bobber_retrieve2.ogg",
+            "item/fishing_rod/bobber_retrieve3.ogg",
+            "item/flint_and_steel/flint_and_steel_click.ogg",
+            "item/bone_meal/bonemeal1.ogg",
+            "item/bone_meal/bonemeal2.ogg",
+            "item/bone_meal/bonemeal3.ogg",
+            "item/bone_meal/bonemeal4.ogg"
     };
 
     @Inject(method = "loadSounds", at = @At("TAIL"))
@@ -103,18 +118,18 @@ public abstract class ExtendedSoundsLoaderMixin {
 
         ClassLoader classLoader = ExtendedSoundsLoaderMixin.class.getClassLoader();
 
-        for (String fileName : SOUND_FILES) {
+        for (String path : SOUND_FILES) {
             try {
-                URL fileUrl = classLoader.getResource("assets/extended_sounds/stationapi/sounds/sound/" + fileName);
+                URL fileUrl = classLoader.getResource(BASE + path);
                 if (fileUrl != null) {
-                    String soundId = "extended_sounds:" + fileName;
-                    ((CustomSoundMap) this.sounds).putSound(soundId, fileUrl);
-                    jockeyphilosopher.extended_sounds.ExtendedSoundsLoop.preload(fileUrl, fileName);
+                    String fileName = path.substring(path.lastIndexOf('/') + 1);
+                    ((CustomSoundMap) this.sounds).putSound("extended_sounds:" + fileName, fileUrl);
+                    jockeyphilosopher.extended_sounds.ExtendedSoundsLoop.preload(fileUrl, "extended_sounds:" + fileName);
                 } else {
-                    System.out.println("EXTENDED_SOUNDS NOT FOUND: " + fileName);
+                    System.out.println("EXTENDED_SOUNDS NOT FOUND: " + path);
                 }
             } catch (Exception e) {
-                System.out.println("EXTENDED_SOUNDS FAILED: " + fileName);
+                System.out.println("EXTENDED_SOUNDS FAILED: " + path);
                 e.printStackTrace();
             }
         }

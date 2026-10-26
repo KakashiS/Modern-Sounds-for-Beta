@@ -137,7 +137,7 @@ public abstract class BucketItemSoundMixin {
         }
 
         if (sound != null) {
-            world.playSound(user, sound, 0.6F, 1.0F);
+            world.playSound(user, sound, 1.0F, 1.0F);
         }
     }
 }
