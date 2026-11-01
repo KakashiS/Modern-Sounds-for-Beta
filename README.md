@@ -1,28 +1,22 @@
-# Fabric Example Mod with StationAPI and BIN Mappings for beta 1.7.3 server + client
-
-## Setup
-
-Run the `_setup/setupMod` task and give it the inputs it needs. **This is a required step.**
-
-[See the StationAPI wiki.](https://github.com/ModificationStation/StationAPI/wiki)
-
-## Common Issues
-
-**My project isn't building after updating babric loom/stationapi!**  
-Run a gradle task with `--refresh-dependencies` as an argument, and this should be fixed. If not, try deleting your project's `.gradle` folder, and try again.
-
-**I get "Invalid source release: 17" as an error!**  
-Use Java 17. Open up `File > Project Structure` and change your SDK to Java 17.  
-If you still get the issue, you may need to go into `File > Settings > Build, Execution, Deployment > Build Tools > Gradle` and change the Java that Gradle uses too.
-
-**How do I stop server.properties from constantly changing?**  
-Remove the last line in the `gitignore` file.
-
-**My client hangs on a blank screen on trying to my test server!**  
-Open your `server.properties` and set `online-mode` to `false`.
-
-[Here for more issues.](https://github.com/calmilamsy/BIN-fabric-example-mod#common-issues)
-
-## License
-
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+This small mod adds missing sounds to Beta 1.7.3, such as:
+All sounds can be individually enabled or disabled in the mod config
+Furnace fire crackle
+Sound of entering and exiting the water
+Underwater ambient loop
+Minecart rolling sound
+Boat water sounds
+Squid sounds (idle, hurt, death)
+Ladder climbing sounds
+Sound of wind during free fall (uses modern Elytra flight sound — since Beta has no Elytras, it felt logical to use it for falling)
+Bucket sounds (water, lava, milk)
+Flint and steel sound
+Painting place/break sounds
+Armor equipping sounds (leather, iron/gold/chainmail, diamond)
+Fishing rod sounds
+Bone meal sound
+Lava sounds
+Chest open/close sounds
+Eating sounds
+Sheep dyeing sound
+Shearing sound
+If another mod already adds the same sound (for example, chest or shearing sounds), just disable it in our config to avoid doubling.
