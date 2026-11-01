@@ -34,7 +34,6 @@ public abstract class BucketItemSoundMixin {
     @Unique
     private int extended_sounds$priorId;
 
-    // Перед использованием: определяем, какой блок будет затронут
     @Inject(method = "use", at = @At("HEAD"))
     private void extended_sounds$beforeUse(ItemStack stack, World world, PlayerEntity user,
                                            CallbackInfoReturnable<ItemStack> cir) {
@@ -113,6 +112,9 @@ public abstract class BucketItemSoundMixin {
         if (action == 0 || user == null) return;
 
         int now = world.getBlockId(extended_sounds$x, extended_sounds$y, extended_sounds$z);
+
+        boolean bucketUsed = cir.getReturnValue() != stack;
+
         String sound = null;
 
         switch (action) {
@@ -123,12 +125,14 @@ public abstract class BucketItemSoundMixin {
                 if (now == 0) sound = "extended_sounds:fill_lava_bucket";
                 break;
             case 3:
-                if (now != extended_sounds$priorId && (now == 8 || now == 9)) {
+                if ((now == 8 || now == 9)
+                        && (now != extended_sounds$priorId || bucketUsed)) {
                     sound = "extended_sounds:empty_water_bucket";
                 }
                 break;
             case 4:
-                if (now != extended_sounds$priorId && (now == 10 || now == 11)) {
+                if ((now == 10 || now == 11)
+                        && (now != extended_sounds$priorId || bucketUsed)) {
                     sound = "extended_sounds:empty_lava_bucket";
                 }
                 break;

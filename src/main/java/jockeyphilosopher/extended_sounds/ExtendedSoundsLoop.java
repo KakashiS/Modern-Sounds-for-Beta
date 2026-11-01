@@ -9,9 +9,9 @@ import java.util.Set;
 
 public class ExtendedSoundsLoop {
 
-    private static final float UNDERWATER_BASE_VOLUME = 0.25F;
-    private static final float MINECART_BASE_VOLUME = 0.09F;
-    private static final float FALL_WIND_TARGET_VOLUME = 0.2F;
+    private static final float UNDERWATER_BASE_VOLUME = 0.3F;
+    private static final float MINECART_BASE_VOLUME = 0.15F;
+    private static final float FALL_WIND_TARGET_VOLUME = 0.3F;
     private static final float FALL_WIND_FADE_STEP = 0.02F;
 
     private static float masterVolume = 1.0F;

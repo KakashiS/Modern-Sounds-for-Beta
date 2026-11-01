@@ -41,6 +41,8 @@ public abstract class ExtendedSoundsLoaderMixin {
             "block/furnace/furnace_fire_crackle3.ogg",
             "block/furnace/furnace_fire_crackle4.ogg",
             "block/furnace/furnace_fire_crackle5.ogg",
+            "block/lava/lava.ogg",
+            "block/lava/lava_pop.ogg",
             // entity
             "entity/boat/boat_water1.ogg",
             "entity/boat/boat_water2.ogg",
@@ -86,7 +88,6 @@ public abstract class ExtendedSoundsLoaderMixin {
             "item/armor/equip_diamond3.ogg",
             "item/armor/equip_diamond4.ogg",
             "item/bucket/fill_water_bucket1.ogg",
-            "item/bucket/fill_water_bucket2.ogg",
             "item/bucket/fill_water_bucket3.ogg",
             "item/bucket/fill_lava_bucket1.ogg",
             "item/bucket/fill_lava_bucket2.ogg",
@@ -100,12 +101,20 @@ public abstract class ExtendedSoundsLoaderMixin {
             "item/fishing_rod/fishing_rod_cast.ogg",
             "item/fishing_rod/bobber_retrieve1.ogg",
             "item/fishing_rod/bobber_retrieve2.ogg",
-            "item/fishing_rod/bobber_retrieve3.ogg",
             "item/flint_and_steel/flint_and_steel_click.ogg",
             "item/bone_meal/bonemeal1.ogg",
             "item/bone_meal/bonemeal2.ogg",
             "item/bone_meal/bonemeal3.ogg",
-            "item/bone_meal/bonemeal4.ogg"
+            "item/bone_meal/bonemeal4.ogg",
+            "item/dye/dye.ogg",
+            "block/chest/chest_open.ogg",
+            "block/chest/chest_close1.ogg",
+            "block/chest/chest_close2.ogg",
+            "block/chest/chest_close3.ogg",
+            "item/food/eat1.ogg",
+            "item/food/eat2.ogg",
+            "item/food/eat3.ogg",
+            "item/shears/shear.ogg"
     };
 
     @Inject(method = "loadSounds", at = @At("TAIL"))
@@ -123,8 +132,9 @@ public abstract class ExtendedSoundsLoaderMixin {
                 URL fileUrl = classLoader.getResource(BASE + path);
                 if (fileUrl != null) {
                     String fileName = path.substring(path.lastIndexOf('/') + 1);
-                    ((CustomSoundMap) this.sounds).putSound("extended_sounds:" + fileName, fileUrl);
-                    jockeyphilosopher.extended_sounds.ExtendedSoundsLoop.preload(fileUrl, "extended_sounds:" + fileName);
+                    String soundId = "extended_sounds:" + fileName;
+                    ((CustomSoundMap) this.sounds).putSound(soundId, fileUrl);
+                    jockeyphilosopher.extended_sounds.ExtendedSoundsLoop.preload(fileUrl, soundId);
                 } else {
                     System.out.println("EXTENDED_SOUNDS NOT FOUND: " + path);
                 }

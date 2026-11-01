@@ -30,6 +30,12 @@ public class Config {
 
             @ConfigEntry(name = "Enable Underwater Ambient Sound", description = "Underwater Ambient Sound")
             public Boolean enableUnderwaterAmbient = true;
+
+            @ConfigEntry(name = "Enable Lava Sounds", description = "Lava Ambient And Pop Sounds")
+            public Boolean enableLavaSounds = true;
+
+            @ConfigEntry(name = "Enable Chest Sounds", description = "Chest Open/Close Sounds")
+            public Boolean enableChestSounds = true;
         }
 
         public static class EntitySounds {
@@ -72,6 +78,15 @@ public class Config {
 
             @ConfigEntry(name = "Enable Bone Meal Sound", description = "Bone Meal Sound")
             public Boolean enableBoneMealSound = true;
+
+            @ConfigEntry(name = "Enable Sheep Dye Sound", description = "Sheep Dye Sound")
+            public Boolean enableSheepDyeSound = true;
+
+            @ConfigEntry(name = "Enable Eating Sound", description = "Eating Sound")
+            public Boolean enableEatSound = true;
+
+            @ConfigEntry(name = "Enable Shears Sound", description = "Shearing Sheep Sound")
+            public Boolean enableShearSound = true;
         }
     }
 }

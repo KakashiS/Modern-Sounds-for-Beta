@@ -26,6 +26,6 @@ public abstract class FlintAndSteelItemSoundMixin {
             index = 4
     )
     private float extended_sounds$flintSoundVolume(float original) {
-        return Config.config.items.enableFlintAndSteelSound ? 0.5F : original;
+        return Config.config.items.enableFlintAndSteelSound ? 0.8F : original;
     }
 }
